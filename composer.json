@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "mattostromhall/laravel-make-in",
+    "description": "A wrapper around the artisan make command to move created models and controllers to a specified path and update the namespace accordingly.",
     "keywords": [
-        ":vendor_name",
+        "mattostromhall",
         "laravel",
-        ":package_slug"
+        "laravel-make-in"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/mattostromhall/laravel-make-in",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Matt Ostrom-Hall",
+            "email": "matthew.ostrom.hall@gmail.com",
             "role": "Developer"
         }
     ],
@@ -34,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "MattOstromHall\\MakeIn\\": "src",
+            "MattOstromHall\\MakeIn\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "MattOstromHall\\MakeIn\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -54,10 +54,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "MattOstromHall\\MakeIn\\MakeInServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "MakeIn": "MattOstromHall\\MakeIn\\Facades\\MakeIn"
             }
         }
     },
