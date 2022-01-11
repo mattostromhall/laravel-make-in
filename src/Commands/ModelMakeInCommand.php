@@ -20,8 +20,12 @@ class ModelMakeInCommand extends Command
     public function handle(): int
     {
         $makeResponse = $this->makeModel();
-        if ($makeResponse === 1) return self::FAILURE;
-        if ($makeResponse === 2) return self::INVALID;
+        if ($makeResponse === 1) {
+            return self::FAILURE;
+        }
+        if ($makeResponse === 2) {
+            return self::INVALID;
+        }
 
         if ($this->pathProvided()) {
             $this->fileSystem->move($this->createdPath(), $this->requestedPath());
@@ -36,7 +40,7 @@ class ModelMakeInCommand extends Command
         return $this->call('make:model', [
             'name' => $this->argument('name'),
             '--controller' => $this->option('controller'),
-            '--migration' => $this->option('migration')
+            '--migration' => $this->option('migration'),
         ]);
     }
 
