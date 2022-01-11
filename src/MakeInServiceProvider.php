@@ -2,9 +2,9 @@
 
 namespace MattOstromHall\MakeIn;
 
+use MattOstromHall\MakeIn\Commands\ModelMakeInCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use MattOstromHall\MakeIn\Commands\ModelMakeInCommand;
 
 class MakeInServiceProvider extends PackageServiceProvider
 {

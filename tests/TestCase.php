@@ -3,8 +3,8 @@
 namespace MattOstromHall\MakeIn\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use MattOstromHall\MakeIn\MakeInServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
