@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class ModelMakeInCommand extends Command
 {
-    public $signature = 'make:model-in {name} {--p|path=} {--c|controller} {--m|migration}';
+    public $signature = 'make:model-in {name} {--i|in=} {--c|controller} {--m|migration}';
 
     public $description = 'Create a new Eloquent model class, move it to a specified location and update the namespace';
 
@@ -76,7 +76,7 @@ class ModelMakeInCommand extends Command
 
     protected function pathProvided(): bool
     {
-        return $this->option('path') !== null;
+        return $this->option('in') !== null;
     }
 
     protected function makeDirectories(string $path)
@@ -93,9 +93,9 @@ class ModelMakeInCommand extends Command
 
     protected function requestedPath(): string|null
     {
-        $sanitisedPath = Str::endsWith($this->option('path'), '/')
-            ? $this->basePath() . $this->option('path')
-            : $this->basePath() . $this->option('path') . '/';
+        $sanitisedPath = Str::endsWith($this->option('in'), '/')
+            ? $this->basePath() . $this->option('in')
+            : $this->basePath() . $this->option('in') . '/';
 
         $this->makeDirectories($sanitisedPath);
 

@@ -6,7 +6,7 @@ return [
      */
     'paths' => [
         'base' => [
-            'model' => app()->path()
+            'model' => app()->path() . '/'
         ]
     ]
 ];
