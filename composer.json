@@ -55,10 +55,7 @@
         "laravel": {
             "providers": [
                 "MattOstromHall\\MakeIn\\MakeInServiceProvider"
-            ],
-            "aliases": {
-                "MakeIn": "MattOstromHall\\MakeIn\\Facades\\MakeIn"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",
