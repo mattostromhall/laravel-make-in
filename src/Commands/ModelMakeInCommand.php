@@ -75,6 +75,13 @@ class ModelMakeInCommand extends Command
         return $this->option('path') !== null;
     }
 
+    protected function makeDirectories(string $path)
+    {
+        if ($this->fileSystem->isDirectory($path)) return;
+
+        $this->fileSystem->makeDirectory($path, 0777, true, true);
+    }
+
     protected function createdPath(): string
     {
         return $this->defaultDirectory() . $this->argument('name') . '.php';
@@ -83,9 +90,11 @@ class ModelMakeInCommand extends Command
     protected function requestedPath(): string|null
     {
         $sanitisedPath = Str::endsWith($this->option('path'), '/')
-            ? $this->option('path')
-            : $this->option('path') . '/';
+            ? $this->basePath() . $this->option('path')
+            : $this->basePath() . $this->option('path') . '/';
 
-        return $this->basePath() . $sanitisedPath . $this->argument('name') . '.php';
+        $this->makeDirectories($sanitisedPath);
+
+        return $sanitisedPath . $this->argument('name') . '.php';
     }
 }
