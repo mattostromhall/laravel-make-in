@@ -4,11 +4,11 @@ namespace MattOstromHall\MakeIn\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
+use MattOstromHall\MakeIn\Support\ModelMakeIn;
 
 class ModelMakeInCommand extends Command
 {
-    public $signature = 'make:model-in {name} {--i|in=} {--c|controller} {--m|migration}';
+    public $signature = 'make:model-in {name} {--p|path=} {--c|controller} {--m|migration}';
 
     public $description = 'Create a new Eloquent model class, move it to a specified location and update the namespace';
 
@@ -19,6 +19,11 @@ class ModelMakeInCommand extends Command
 
     public function handle(): int
     {
+        $makeIn = app()->makeWith(ModelMakeIn::class, [
+            'name' => $this->argument('name'),
+            'path' => $this->option('path')
+        ]);
+
         $makeResponse = $this->makeModel();
         if ($makeResponse === 1) {
             return self::FAILURE;
@@ -27,9 +32,9 @@ class ModelMakeInCommand extends Command
             return self::INVALID;
         }
 
-        if ($this->pathProvided()) {
-            $this->fileSystem->move($this->createdPath(), $this->requestedPath());
-            $this->info('Model moved to ' . $this->requestedPath());
+        $moved = $makeIn->move();
+        if ($moved) {
+            $this->info('Model moved to ' . $makeIn->movedTo());
         }
 
         return self::SUCCESS;
@@ -42,63 +47,5 @@ class ModelMakeInCommand extends Command
             '--controller' => $this->option('controller'),
             '--migration' => $this->option('migration'),
         ]);
-    }
-
-    protected function modelDirectoryExists(): bool
-    {
-        return is_dir(app_path('Models'));
-    }
-
-    protected function defaultDirectory(): string
-    {
-        $appPath = app()->path();
-
-        return $this->modelDirectoryExists()
-            ? $appPath . '/Models/'
-            : $appPath . '/';
-    }
-
-    protected function defaultNamespace(): string
-    {
-        $rootNamespace = app()->getNamespace();
-
-        return $this->modelDirectoryExists()
-            ? $rootNamespace . '\\Models'
-            : $rootNamespace;
-    }
-
-    protected function basePath(): string
-    {
-        return Str::endsWith(config('make-in.paths.base.model'), '/')
-            ? config('make-in.paths.base.model')
-            : config('make-in.paths.base.model') . '/';
-    }
-
-    protected function pathProvided(): bool
-    {
-        return $this->option('in') !== null;
-    }
-
-    protected function makeDirectories(string $path)
-    {
-        if ($this->fileSystem->isDirectory($path)) return;
-
-        $this->fileSystem->makeDirectory($path, 0777, true, true);
-    }
-
-    protected function createdPath(): string
-    {
-        return $this->defaultDirectory() . $this->argument('name') . '.php';
-    }
-
-    protected function requestedPath(): string|null
-    {
-        $sanitisedPath = Str::endsWith($this->option('in'), '/')
-            ? $this->basePath() . $this->option('in')
-            : $this->basePath() . $this->option('in') . '/';
-
-        $this->makeDirectories($sanitisedPath);
-
-        return $sanitisedPath . $this->argument('name') . '.php';
     }
 }

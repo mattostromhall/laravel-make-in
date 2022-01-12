@@ -1,12 +1,17 @@
 <?php
 
-namespace MattOstromHall\MakeIn;
+namespace MattOstromHall\MakeIn\Support;
 
 use Illuminate\Support\Str;
 
 class ModelMakeIn extends MakeIn
 {
-    public function defaultDirectory(): string
+    protected function modelDirectoryExists(): bool
+    {
+        return is_dir(app_path('Models'));
+    }
+
+    protected function defaultDirectory(): string
     {
         $appPath = app()->path();
 
@@ -15,7 +20,7 @@ class ModelMakeIn extends MakeIn
             : $appPath . '/';
     }
 
-    public function defaultNamespace(): string
+    protected function defaultNamespace(): string
     {
         $rootNamespace = app()->getNamespace();
 
@@ -24,7 +29,7 @@ class ModelMakeIn extends MakeIn
             : $rootNamespace;
     }
 
-    public function basePath(): string
+    protected function basePath(): string
     {
         return Str::endsWith(config('make-in.paths.base.model'), '/')
             ? config('make-in.paths.base.model')
