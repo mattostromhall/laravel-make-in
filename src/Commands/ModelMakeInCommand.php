@@ -24,6 +24,12 @@ class ModelMakeInCommand extends Command
             'path' => $this->option('path'),
         ]);
 
+        if ($this->option('controller')) {
+            if ($this->confirm('Mirror path for controller?', true)) {
+                $this->makeController();
+            }
+        }
+
         $makeResponse = $this->makeModel();
         if ($makeResponse === 1) {
             return self::FAILURE;
@@ -47,6 +53,14 @@ class ModelMakeInCommand extends Command
             'name' => $this->argument('name'),
             '--controller' => $this->option('controller'),
             '--migration' => $this->option('migration'),
+        ]);
+    }
+
+    protected function makeController(): int
+    {
+        return $this->call('make:controller-in', [
+            'name' => $this->argument('name'),
+            '--path' => $this->option('path'),
         ]);
     }
 }

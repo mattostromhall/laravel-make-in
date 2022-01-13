@@ -2,7 +2,9 @@
 
 namespace MattOstromHall\MakeIn;
 
+use MattOstromHall\MakeIn\Commands\ControllerMakeInCommand;
 use MattOstromHall\MakeIn\Commands\ModelMakeInCommand;
+use MattOstromHall\MakeIn\Support\ControllerMakeIn;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -13,6 +15,9 @@ class MakeInServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-make-in')
             ->hasConfigFile()
-            ->hasCommands(ModelMakeInCommand::class);
+            ->hasCommands(
+                ModelMakeInCommand::class,
+                ControllerMakeInCommand::class
+            );
     }
 }
