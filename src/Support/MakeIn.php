@@ -13,8 +13,7 @@ abstract class MakeIn
         protected Filesystem $fileSystem,
         protected string $name,
         protected string|null $path
-    )
-    {
+    ) {
         //
     }
 
@@ -36,7 +35,9 @@ abstract class MakeIn
 
     protected function makeDirectories(string $path)
     {
-        if ($this->fileSystem->isDirectory($path)) return;
+        if ($this->fileSystem->isDirectory($path)) {
+            return;
+        }
 
         $this->fileSystem->makeDirectory($path, 0777, true, true);
     }
@@ -51,7 +52,7 @@ abstract class MakeIn
         $path = Str::of($this->path)
             ->replace('/', ' ')
             ->split('/[\s]+/')
-            ->map(fn($str) => Str::of($str)->lower()->studly())
+            ->map(fn ($str) => Str::of($str)->lower()->studly())
             ->join('/');
 
         return Str::endsWith($path, '/') || $path === ''

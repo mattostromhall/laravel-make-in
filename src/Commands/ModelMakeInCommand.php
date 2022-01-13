@@ -21,7 +21,7 @@ class ModelMakeInCommand extends Command
     {
         $makeIn = app()->makeWith(ModelMakeIn::class, [
             'name' => $this->argument('name'),
-            'path' => $this->option('path')
+            'path' => $this->option('path'),
         ]);
 
         $makeResponse = $this->makeModel();
