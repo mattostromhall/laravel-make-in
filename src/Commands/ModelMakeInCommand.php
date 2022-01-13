@@ -35,6 +35,7 @@ class ModelMakeInCommand extends Command
         $moved = $makeIn->move();
         if ($moved) {
             $this->info('Model moved to ' . $makeIn->movedTo());
+            $this->info('Namespace updated to ' . $makeIn->namespaceTo());
         }
 
         return self::SUCCESS;

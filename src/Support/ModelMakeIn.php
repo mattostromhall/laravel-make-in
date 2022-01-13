@@ -2,10 +2,10 @@
 
 namespace MattOstromHall\MakeIn\Support;
 
-use Illuminate\Support\Str;
-
 class ModelMakeIn extends MakeIn
 {
+    protected string $type = 'model';
+
     protected function modelDirectoryExists(): bool
     {
         return is_dir(app_path('Models'));
@@ -25,14 +25,7 @@ class ModelMakeIn extends MakeIn
         $rootNamespace = app()->getNamespace();
 
         return $this->modelDirectoryExists()
-            ? $rootNamespace . '\\Models'
+            ? $rootNamespace . 'Models'
             : $rootNamespace;
-    }
-
-    protected function basePath(): string
-    {
-        return Str::endsWith(config('make-in.paths.base.model'), '/')
-            ? config('make-in.paths.base.model')
-            : config('make-in.paths.base.model') . '/';
     }
 }
