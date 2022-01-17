@@ -16,8 +16,7 @@ abstract class MakeIn
         protected string      $name,
         protected string|null $path,
         protected array       $options = []
-    )
-    {
+    ) {
         //
     }
 
@@ -27,17 +26,19 @@ abstract class MakeIn
 
     public function make(): int
     {
-        return Artisan::call("make:$this->type", array_merge(
-                ['name' => $this->name],
-                $this->sanitisedOptions()
-            )
+        return Artisan::call(
+            "make:$this->type",
+            array_merge(
+            ['name' => $this->name],
+            $this->sanitisedOptions()
+        )
         );
     }
 
     protected function sanitisedOptions(): array
     {
         return collect(Arr::except($this->options, ['path', 'help', 'quiet', 'version']))
-            ->flatMap(function($option, $key) {
+            ->flatMap(function ($option, $key) {
                 return ["--$key" => $option];
             })
             ->toArray();
@@ -74,7 +75,7 @@ abstract class MakeIn
         $path = Str::of($this->path)
             ->replace('/', ' ')
             ->split('/[\s]+/')
-            ->map(fn($str) => Str::of($str)->lower()->studly())
+            ->map(fn ($str) => Str::of($str)->lower()->studly())
             ->join('/');
 
         return Str::endsWith($path, '/') || $path === ''
