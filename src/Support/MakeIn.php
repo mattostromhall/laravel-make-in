@@ -3,6 +3,8 @@
 namespace MattOstromHall\MakeIn\Support;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
 abstract class MakeIn
@@ -10,16 +12,36 @@ abstract class MakeIn
     protected string $type;
 
     public function __construct(
-        protected Filesystem $fileSystem,
-        protected string $name,
-        protected string|null $path
-    ) {
+        protected Filesystem  $fileSystem,
+        protected string      $name,
+        protected string|null $path,
+        protected array       $options = []
+    )
+    {
         //
     }
 
     abstract protected function defaultDirectory(): string;
 
     abstract protected function defaultNamespace(): string;
+
+    public function make(): int
+    {
+        return Artisan::call("make:$this->type", array_merge(
+                ['name' => $this->name],
+                $this->sanitisedOptions()
+            )
+        );
+    }
+
+    protected function sanitisedOptions(): array
+    {
+        return collect(Arr::except($this->options, ['path', 'help', 'quiet', 'version']))
+            ->flatMap(function($option, $key) {
+                return ["--$key" => $option];
+            })
+            ->toArray();
+    }
 
     protected function basePath(): string
     {
@@ -52,7 +74,7 @@ abstract class MakeIn
         $path = Str::of($this->path)
             ->replace('/', ' ')
             ->split('/[\s]+/')
-            ->map(fn ($str) => Str::of($str)->lower()->studly())
+            ->map(fn($str) => Str::of($str)->lower()->studly())
             ->join('/');
 
         return Str::endsWith($path, '/') || $path === ''

@@ -4,6 +4,7 @@ namespace MattOstromHall\MakeIn\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use MattOstromHall\MakeIn\Support\ControllerMakeIn;
 use MattOstromHall\MakeIn\Support\ModelMakeIn;
 
 class ModelMakeInCommand extends Command
@@ -22,15 +23,11 @@ class ModelMakeInCommand extends Command
         $makeIn = app()->makeWith(ModelMakeIn::class, [
             'name' => $this->argument('name'),
             'path' => $this->option('path'),
+            'options' => $this->options()
         ]);
 
-        if ($this->option('controller')) {
-            if ($this->confirm('Mirror path for controller?', true)) {
-                $this->makeController();
-            }
-        }
+        $makeResponse = $makeIn->make();
 
-        $makeResponse = $this->makeModel();
         if ($makeResponse === 1) {
             return self::FAILURE;
         }
@@ -38,29 +35,35 @@ class ModelMakeInCommand extends Command
             return self::INVALID;
         }
 
-        $moved = $makeIn->move();
-        if ($moved) {
-            $this->info('Model moved to ' . $makeIn->movedTo());
-            $this->info('Namespace updated to ' . $makeIn->namespaceTo());
+        if ($this->option('controller')) {
+            if ($this->confirm('Mirror path for controller?', true)) {
+                $this->moveController();
+            }
         }
+
+        $moved = $makeIn->move();
+
+        if (!$moved) {
+            return self::FAILURE;
+        }
+
+        $this->info('Model created in ' . $makeIn->movedTo());
+        $this->info('Created with Namespace ' . $makeIn->namespaceTo());
 
         return self::SUCCESS;
     }
 
-    protected function makeModel(): int
+    protected function moveController(): int
     {
-        return $this->call('make:model', [
-            'name' => $this->argument('name'),
-            '--controller' => $this->option('controller'),
-            '--migration' => $this->option('migration'),
+        $controllerMakeIn = app()->makeWith(ControllerMakeIn::class, [
+            'name' => $this->argument('name') . 'Controller',
+            'path' => $this->option('path'),
+            'options' => $this->options()
         ]);
-    }
 
-    protected function makeController(): int
-    {
-        return $this->call('make:controller-in', [
-            'name' => $this->argument('name'),
-            '--path' => $this->option('path'),
-        ]);
+        $this->info('Controller created in ' . $controllerMakeIn->movedTo());
+        $this->info('Created with Namespace ' . $controllerMakeIn->namespaceTo());
+
+        return $controllerMakeIn->move();
     }
 }
