@@ -4,7 +4,6 @@ namespace MattOstromHall\MakeIn;
 
 use MattOstromHall\MakeIn\Commands\ControllerMakeInCommand;
 use MattOstromHall\MakeIn\Commands\ModelMakeInCommand;
-use MattOstromHall\MakeIn\Support\ControllerMakeIn;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
