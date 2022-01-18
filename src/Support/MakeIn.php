@@ -111,13 +111,13 @@ abstract class MakeIn
         $moved = $this->fileSystem->move($this->createdPath(), $this->requestedPath());
 
         if ($moved) {
-            $this->updateNamespace();
+            $this->updateFileContents();
         }
 
         return $moved;
     }
 
-    protected function updateNamespace()
+    protected function updateFileContents()
     {
         $this->fileSystem->replaceInFile($this->defaultNamespace(), $this->requestedNamespace(), $this->movedTo());
     }

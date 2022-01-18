@@ -8,7 +8,7 @@ use MattOstromHall\MakeIn\Support\ControllerMakeIn;
 
 class ControllerMakeInCommand extends Command
 {
-    public $signature = 'make:controller-in {name} {--p|path=}';
+    public $signature = 'make:controller-in {name} {--p|path=} {--api} {--i|invokable} {--r|resource}';
 
     public $description = 'Create a new controller class, move it to a specified location and update the namespace';
 
@@ -22,9 +22,10 @@ class ControllerMakeInCommand extends Command
         $makeIn = app()->makeWith(ControllerMakeIn::class, [
             'name' => $this->argument('name'),
             'path' => $this->option('path'),
+            'options' => $this->options()
         ]);
 
-        $makeResponse = $this->makeController();
+        $makeResponse = $makeIn->make();
         if ($makeResponse === 1) {
             return self::FAILURE;
         }
@@ -33,18 +34,13 @@ class ControllerMakeInCommand extends Command
         }
 
         $moved = $makeIn->move();
-        if ($moved) {
-            $this->info('Controller moved to ' . $makeIn->movedTo());
-            $this->info('Namespace updated to ' . $makeIn->namespaceTo());
+        if (!$moved) {
+            return self::FAILURE;
         }
 
-        return self::SUCCESS;
-    }
+        $this->info('Controller created in ' . $makeIn->movedTo());
+        $this->info('Created with Namespace ' . $makeIn->namespaceTo());
 
-    protected function makeController(): int
-    {
-        return $this->call('make:controller', [
-            'name' => $this->argument('name')
-        ]);
+        return self::SUCCESS;
     }
 }

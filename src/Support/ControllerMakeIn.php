@@ -15,4 +15,15 @@ class ControllerMakeIn extends MakeIn
     {
         return app()->getNamespace() . 'Http\Controllers';
     }
+
+    protected function updateFileContents()
+    {
+        parent::updateFileContents();
+
+        $this->fileSystem->replaceInFile(
+            'use Illuminate\Http\Request;',
+            "use App\Http\Controllers\Controller;\nuse Illuminate\Http\Request;",
+            $this->movedTo()
+        );
+    }
 }
