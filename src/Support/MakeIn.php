@@ -29,9 +29,9 @@ abstract class MakeIn
         return Artisan::call(
             "make:$this->type",
             array_merge(
-            ['name' => $this->name],
-            $this->sanitisedOptions()
-        )
+                ['name' => $this->name],
+                $this->sanitisedOptions()
+            )
         );
     }
 
