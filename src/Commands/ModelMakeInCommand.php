@@ -42,7 +42,7 @@ class ModelMakeInCommand extends Command
 
         $moved = $makeIn->move();
 
-        if (! $moved) {
+        if (!$moved) {
             return self::FAILURE;
         }
 
