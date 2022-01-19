@@ -22,7 +22,7 @@ class ControllerMakeIn extends MakeIn
 
         $this->fileSystem->replaceInFile(
             'use Illuminate\Http\Request;',
-            "use App\Http\Controllers\Controller;\nuse Illuminate\Http\Request;",
+            "use " . config("make-in.namespace.base.$this->type") . "\Controller;\nuse Illuminate\Http\Request;",
             $this->movedTo()
         );
     }
