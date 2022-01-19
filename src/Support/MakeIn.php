@@ -16,7 +16,8 @@ abstract class MakeIn
         protected string      $name,
         protected string|null $path,
         protected array       $options = []
-    ) {
+    )
+    {
         //
     }
 
@@ -75,7 +76,7 @@ abstract class MakeIn
         $path = Str::of($this->path)
             ->replace('/', ' ')
             ->split('/[\s]+/')
-            ->map(fn ($str) => Str::of($str)->lower()->studly())
+            ->map(fn($str) => Str::of($str)->lower()->studly())
             ->join('/');
 
         return Str::endsWith($path, '/') || $path === ''

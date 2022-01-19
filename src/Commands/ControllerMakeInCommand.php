@@ -3,7 +3,6 @@
 namespace MattOstromHall\MakeIn\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use MattOstromHall\MakeIn\Support\ControllerMakeIn;
 
 class ControllerMakeInCommand extends Command
@@ -12,7 +11,7 @@ class ControllerMakeInCommand extends Command
 
     public $description = 'Create a new controller class, move it to a specified location and update the namespace';
 
-    public function __construct(protected Filesystem $fileSystem)
+    public function __construct()
     {
         parent::__construct();
     }

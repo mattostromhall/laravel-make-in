@@ -3,7 +3,6 @@
 namespace MattOstromHall\MakeIn\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use MattOstromHall\MakeIn\Support\ControllerMakeIn;
 use MattOstromHall\MakeIn\Support\ModelMakeIn;
 
@@ -13,7 +12,7 @@ class ModelMakeInCommand extends Command
 
     public $description = 'Create a new Eloquent model class, move it to a specified location and update the namespace';
 
-    public function __construct(protected Filesystem $fileSystem)
+    public function __construct()
     {
         parent::__construct();
     }
