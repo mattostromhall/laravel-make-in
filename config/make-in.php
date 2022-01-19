@@ -13,6 +13,7 @@ return [
     ],
     'namespace' => [
         'base' => [
+            'command' => env('NAMESPACE_BASE_COMMAND', 'App\Console\Commands'),
             'controller' => env('NAMESPACE_BASE_CONTROLLER', 'App\Http\Controllers'),
             'model' => env('NAMESPACE_BASE_MODEL', 'App\Models')
         ]
