@@ -20,6 +20,11 @@ class ControllerMakeIn extends MakeIn
     {
         parent::updateFileContents();
 
+        $this->insertUseStatement();
+    }
+
+    protected function insertUseStatement()
+    {
         $this->fileSystem->replaceInFile(
             'use Illuminate\Http\Request;',
             "use " . config("make-in.namespace.base.$this->type") . "\Controller;\nuse Illuminate\Http\Request;",

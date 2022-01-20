@@ -12,10 +12,10 @@ abstract class MakeIn
     protected string $type;
 
     public function __construct(
-        protected Filesystem  $fileSystem,
-        protected string      $name,
+        protected Filesystem $fileSystem,
+        protected string $name,
         protected string|null $path,
-        protected array       $options = []
+        protected array $options = []
     ) {
         //
     }
