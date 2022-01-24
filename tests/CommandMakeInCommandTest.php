@@ -7,8 +7,9 @@ use function Pest\Laravel\artisan;
 beforeEach(function () {
     $this->fileSystem = app(Filesystem::class);
     if (!$this->fileSystem->exists(app_path('Console') . '/Kernel.php')) {
-        $this->fileSystem->put(app_path('Console') . '/Kernel.php',
-'<?php' . "\n" .
+        $this->fileSystem->put(
+            app_path('Console') . '/Kernel.php',
+            '<?php' . "\n" .
 
 'namespace App\Console;
 
