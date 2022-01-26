@@ -7,6 +7,7 @@ use MattOstromHall\MakeIn\Commands\ControllerMakeInCommand;
 use MattOstromHall\MakeIn\Commands\JobMakeInCommand;
 use MattOstromHall\MakeIn\Commands\MailMakeInCommand;
 use MattOstromHall\MakeIn\Commands\ModelMakeInCommand;
+use MattOstromHall\MakeIn\Commands\RequestMakeInCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -22,7 +23,8 @@ class MakeInServiceProvider extends PackageServiceProvider
                 ControllerMakeInCommand::class,
                 JobMakeInCommand::class,
                 MailMakeInCommand::class,
-                ModelMakeInCommand::class
+                ModelMakeInCommand::class,
+                RequestMakeInCommand::class
             );
     }
 }
