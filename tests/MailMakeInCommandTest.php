@@ -55,3 +55,21 @@ it('will create the mail in the base location if no path is provided', function 
         $this->fileSystem->get(config('make-in.path.base.mail') . 'Test.php')
     );
 });
+
+it('creates a new markdown template for the mail class if markdown option is provided', function () {
+    artisan(MailMakeInCommand::class, [
+        'name' => 'Test',
+        '--path' => 'Test/SubTest/',
+        '--markdown' => 'test.subtest.test'
+    ])
+        ->expectsOutput('Mail created in ' . config('make-in.path.base.mail') . 'Test/Subtest/Test.php')
+        ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.mail') . '\Test\Subtest')
+        ->assertSuccessful();
+
+    expect($this->fileSystem->exists(config('make-in.path.base.mail') . 'Test/Subtest/Test.php'))->toBeTrue();
+    expect($this->fileSystem->exists(resource_path('views/test/subtest') . '/test.blade.php'))->toBeTrue();
+    $this->assertStringContainsString(
+        config('make-in.namespace.base.mail') . '\Test\Subtest',
+        $this->fileSystem->get(config('make-in.path.base.mail') . 'Test/Subtest/Test.php')
+    );
+});
