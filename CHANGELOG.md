@@ -2,6 +2,6 @@
 
 All notable changes to `laravel-make-in` will be documented in this file.
 
-## 1.0.0 - 202X-XX-XX
+## 0.1.0 - 2022-02-11
 
 - initial release
