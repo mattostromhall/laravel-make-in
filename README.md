@@ -14,7 +14,7 @@ However, if for instance you are following a Domain  Driven approach, this saves
 You can install the package via composer:
 
 ```bash
-composer require mattostromhall/laravel-make-in
+composer require --dev mattostromhall/laravel-make-in
 ```
 
 ## Usage
