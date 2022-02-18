@@ -7,7 +7,7 @@ use MattOstromHall\MakeIn\Support\CommandMakeIn;
 
 class CommandMakeInCommand extends Command
 {
-    public $signature = 'make:command-in {name} {--p|path=}';
+    public $signature = 'make:command-in {name?} {--p|path=}';
 
     public $description = 'Create a new command class, move it to a specified location and update the namespace';
 
@@ -19,8 +19,8 @@ class CommandMakeInCommand extends Command
     public function handle(): int
     {
         $makeIn = app()->makeWith(CommandMakeIn::class, [
-            'name' => $this->argument('name'),
-            'path' => $this->option('path'),
+            'name' => $this->argument('name') ?? $this->ask('What is the command called?'),
+            'path' => $this->option('path') ?? $this->ask('What is the path? (press enter for default)'),
             'options' => $this->options()
         ]);
 

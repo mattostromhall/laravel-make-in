@@ -7,7 +7,7 @@ use MattOstromHall\MakeIn\Support\MailMakeIn;
 
 class MailMakeInCommand extends Command
 {
-    public $signature = 'make:mail-in {name} {--p|path=} {--f|force} {--m|markdown=}';
+    public $signature = 'make:mail-in {name?} {--p|path=} {--f|force} {--m|markdown=}';
 
     public $description = 'Create a new mail class, move it to a specified location and update the namespace';
 
@@ -19,8 +19,8 @@ class MailMakeInCommand extends Command
     public function handle(): int
     {
         $makeIn = app()->makeWith(MailMakeIn::class, [
-            'name' => $this->argument('name'),
-            'path' => $this->option('path'),
+            'name' => $this->argument('name') ?? $this->ask('What is the mail called?'),
+            'path' => $this->option('path') ?? $this->ask('What is the path? (press enter for default)'),
             'options' => $this->options()
         ]);
 

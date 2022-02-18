@@ -7,7 +7,7 @@ use MattOstromHall\MakeIn\Support\RequestMakeIn;
 
 class RequestMakeInCommand extends Command
 {
-    public $signature = 'make:request-in {name} {--p|path=}';
+    public $signature = 'make:request-in {name?} {--p|path=}';
 
     public $description = 'Create a new request class, move it to a specified location and update the namespace';
 
@@ -19,8 +19,8 @@ class RequestMakeInCommand extends Command
     public function handle(): int
     {
         $makeIn = app()->makeWith(RequestMakeIn::class, [
-            'name' => $this->argument('name'),
-            'path' => $this->option('path'),
+            'name' => $this->argument('name') ?? $this->ask('What is the request called?'),
+            'path' => $this->option('path') ?? $this->ask('What is the path? (press enter for default)'),
             'options' => $this->options()
         ]);
 

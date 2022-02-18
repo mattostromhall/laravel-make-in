@@ -7,7 +7,7 @@ use MattOstromHall\MakeIn\Support\JobMakeIn;
 
 class JobMakeInCommand extends Command
 {
-    public $signature = 'make:job-in {name} {--p|path=} {--sync}';
+    public $signature = 'make:job-in {name?} {--p|path=} {--sync}';
 
     public $description = 'Create a new job class, move it to a specified location and update the namespace';
 
@@ -19,8 +19,8 @@ class JobMakeInCommand extends Command
     public function handle(): int
     {
         $makeIn = app()->makeWith(JobMakeIn::class, [
-            'name' => $this->argument('name'),
-            'path' => $this->option('path'),
+            'name' => $this->argument('name') ?? $this->ask('What is the job called?'),
+            'path' => $this->option('path') ?? $this->ask('What is the path? (press enter for default)'),
             'options' => $this->options()
         ]);
 

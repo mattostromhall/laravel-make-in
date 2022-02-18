@@ -7,7 +7,7 @@ use MattOstromHall\MakeIn\Support\ControllerMakeIn;
 
 class ControllerMakeInCommand extends Command
 {
-    public $signature = 'make:controller-in {name} {--p|path=} {--api} {--i|invokable} {--r|resource}';
+    public $signature = 'make:controller-in {name?} {--p|path=} {--api} {--i|invokable} {--r|resource}';
 
     public $description = 'Create a new controller class, move it to a specified location and update the namespace';
 
@@ -19,8 +19,8 @@ class ControllerMakeInCommand extends Command
     public function handle(): int
     {
         $makeIn = app()->makeWith(ControllerMakeIn::class, [
-            'name' => $this->argument('name'),
-            'path' => $this->option('path'),
+            'name' => $this->argument('name') ?? $this->ask('What is the controller called?'),
+            'path' => $this->option('path') ?? $this->ask('What is the path? (press enter for default)'),
             'options' => $this->options()
         ]);
 

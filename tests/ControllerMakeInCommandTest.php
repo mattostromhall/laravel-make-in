@@ -49,6 +49,7 @@ it('will create the controller in the base location if no path is provided', fun
         'name' => 'TestController',
         '--path' => null
     ])
+        ->expectsQuestion('What is the path? (press enter for default)', null)
         ->expectsOutput('Controller created in ' . config('make-in.path.base.controller') . 'TestController.php')
         ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.controller'))
         ->assertSuccessful();
@@ -57,5 +58,24 @@ it('will create the controller in the base location if no path is provided', fun
     $this->assertStringContainsString(
         config('make-in.namespace.base.controller'),
         $this->fileSystem->get(config('make-in.path.base.controller') . 'TestController.php')
+    );
+});
+
+it('prompts for a name and a path if they are not provided', function () {
+    artisan(ControllerMakeInCommand::class)
+        ->expectsQuestion('What is the controller called?', 'TestController')
+        ->expectsQuestion('What is the path? (press enter for default)', 'Test/SubTest/')
+        ->expectsOutput('Controller created in ' . config('make-in.path.base.controller') . 'Test/Subtest/TestController.php')
+        ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.controller') . '\Test\Subtest')
+        ->assertSuccessful();
+
+    expect($this->fileSystem->exists(config('make-in.path.base.controller') . 'Test/Subtest/TestController.php'))->toBeTrue();
+    $this->assertStringContainsString(
+        config('make-in.namespace.base.controller') . '\Test\Subtest',
+        $this->fileSystem->get(config('make-in.path.base.controller') . 'Test/Subtest/TestController.php')
+    );
+    $this->assertStringContainsString(
+        'use App\Http\Controllers\Controller;',
+        $this->fileSystem->get(config('make-in.path.base.controller') . 'Test/Subtest/TestController.php')
     );
 });

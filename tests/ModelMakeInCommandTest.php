@@ -45,6 +45,7 @@ it('will create the model in the base location if no path is provided', function
         'name' => 'Test',
         '--path' => null
     ])
+        ->expectsQuestion('What is the path? (press enter for default)', null)
         ->expectsOutput('Model created in ' . config('make-in.path.base.model') . 'Test.php')
         ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.model'))
         ->assertSuccessful();
@@ -56,32 +57,17 @@ it('will create the model in the base location if no path is provided', function
     );
 });
 
-it('creates a model and controller, moves it to the requested path and updates the namespace', function () {
-    artisan(ModelMakeInCommand::class, [
-        'name' => 'Test',
-        '--path' => 'Test/SubTest/',
-        '--controller' => true
-    ])
-        ->expectsConfirmation('Mirror path for controller?', 'yes')
-        ->expectsOutput('Controller created in ' . config('make-in.path.base.controller') . 'Test/Subtest/TestController.php')
-        ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.controller') . '\Test\Subtest')
+it('prompts for a name and a path if they are not provided', function () {
+    artisan(ModelMakeInCommand::class)
+        ->expectsQuestion('What is the model called?', 'Test')
+        ->expectsQuestion('What is the path? (press enter for default)', 'Test/SubTest/')
         ->expectsOutput('Model created in ' . config('make-in.path.base.model') . 'Test/Subtest/Test.php')
         ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.model') . '\Test\Subtest')
         ->assertSuccessful();
 
     expect($this->fileSystem->exists(config('make-in.path.base.model') . 'Test/Subtest/Test.php'))->toBeTrue();
-    expect($this->fileSystem->exists(config('make-in.path.base.controller') . 'Test/Subtest/TestController.php'))->toBeTrue();
-
     $this->assertStringContainsString(
         config('make-in.namespace.base.model') . '\Test\Subtest',
         $this->fileSystem->get(config('make-in.path.base.model') . 'Test/Subtest/Test.php')
-    );
-    $this->assertStringContainsString(
-        config('make-in.namespace.base.controller') . '\Test\Subtest',
-        $this->fileSystem->get(config('make-in.path.base.controller') . 'Test/Subtest/TestController.php')
-    );
-    $this->assertStringContainsString(
-        'use App\Http\Controllers\Controller;',
-        $this->fileSystem->get(config('make-in.path.base.controller') . 'Test/Subtest/TestController.php')
     );
 });

@@ -45,6 +45,7 @@ it('will create the request in the base location if no path is provided', functi
         'name' => 'Test',
         '--path' => null
     ])
+        ->expectsQuestion('What is the path? (press enter for default)', null)
         ->expectsOutput('Request created in ' . config('make-in.path.base.request') . 'Test.php')
         ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.request'))
         ->assertSuccessful();
@@ -53,5 +54,20 @@ it('will create the request in the base location if no path is provided', functi
     $this->assertStringContainsString(
         config('make-in.namespace.base.request'),
         $this->fileSystem->get(config('make-in.path.base.request') . 'Test.php')
+    );
+});
+
+it('prompts for a name and a path if they are not provided', function () {
+    artisan(RequestMakeInCommand::class)
+        ->expectsQuestion('What is the request called?', 'Test')
+        ->expectsQuestion('What is the path? (press enter for default)', 'Test/SubTest/')
+        ->expectsOutput('Request created in ' . config('make-in.path.base.request') . 'Test/Subtest/Test.php')
+        ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.request') . '\Test\Subtest')
+        ->assertSuccessful();
+
+    expect($this->fileSystem->exists(config('make-in.path.base.request') . 'Test/Subtest/Test.php'))->toBeTrue();
+    $this->assertStringContainsString(
+        config('make-in.namespace.base.request') . '\Test\Subtest',
+        $this->fileSystem->get(config('make-in.path.base.request') . 'Test/Subtest/Test.php')
     );
 });

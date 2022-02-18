@@ -45,6 +45,7 @@ it('will create the mail in the base location if no path is provided', function 
         'name' => 'Test',
         '--path' => null
     ])
+        ->expectsQuestion('What is the path? (press enter for default)', null)
         ->expectsOutput('Mail created in ' . config('make-in.path.base.mail') . 'Test.php')
         ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.mail'))
         ->assertSuccessful();
@@ -68,6 +69,21 @@ it('creates a new markdown template for the mail class if markdown option is pro
 
     expect($this->fileSystem->exists(config('make-in.path.base.mail') . 'Test/Subtest/Test.php'))->toBeTrue();
     expect($this->fileSystem->exists(resource_path('views/test/subtest') . '/test.blade.php'))->toBeTrue();
+    $this->assertStringContainsString(
+        config('make-in.namespace.base.mail') . '\Test\Subtest',
+        $this->fileSystem->get(config('make-in.path.base.mail') . 'Test/Subtest/Test.php')
+    );
+});
+
+it('prompts for a name and a path if they are not provided', function () {
+    artisan(MailMakeInCommand::class)
+        ->expectsQuestion('What is the mail called?', 'Test')
+        ->expectsQuestion('What is the path? (press enter for default)', 'Test/SubTest/')
+        ->expectsOutput('Mail created in ' . config('make-in.path.base.mail') . 'Test/Subtest/Test.php')
+        ->expectsOutput('Created with Namespace ' . config('make-in.namespace.base.mail') . '\Test\Subtest')
+        ->assertSuccessful();
+
+    expect($this->fileSystem->exists(config('make-in.path.base.mail') . 'Test/Subtest/Test.php'))->toBeTrue();
     $this->assertStringContainsString(
         config('make-in.namespace.base.mail') . '\Test\Subtest',
         $this->fileSystem->get(config('make-in.path.base.mail') . 'Test/Subtest/Test.php')

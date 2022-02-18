@@ -8,7 +8,7 @@ use MattOstromHall\MakeIn\Support\ModelMakeIn;
 
 class ModelMakeInCommand extends Command
 {
-    public $signature = 'make:model-in {name} {--p|path=} {--c|controller} {--m|migration}';
+    public $signature = 'make:model-in {name?} {--p|path=} {--c|controller} {--m|migration}';
 
     public $description = 'Create a new Eloquent model class, move it to a specified location and update the namespace';
 
@@ -20,8 +20,8 @@ class ModelMakeInCommand extends Command
     public function handle(): int
     {
         $makeIn = app()->makeWith(ModelMakeIn::class, [
-            'name' => $this->argument('name'),
-            'path' => $this->option('path'),
+            'name' => $this->argument('name') ?? $this->ask('What is the model called?'),
+            'path' => $this->option('path') ?? $this->ask('What is the path? (press enter for default)'),
             'options' => $this->options()
         ]);
 
