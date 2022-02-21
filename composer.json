@@ -1,6 +1,6 @@
 {
     "name": "mattostromhall/laravel-make-in",
-    "description": "A wrapper around the artisan make command to move created models and controllers to a specified path and update the namespace accordingly.",
+    "description": "A wrapper around the artisan make command to move created classes to a specified path and update the namespace accordingly.",
     "keywords": [
         "mattostromhall",
         "laravel",
@@ -17,25 +17,23 @@
     ],
     "require": {
         "php": "^8.0",
-        "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^8.73"
+        "spatie/laravel-package-tools": "^1.11",
+        "illuminate/contracts": "^v9.1"
     },
     "require-dev": {
-        "nunomaduro/collision": "^5.10",
-        "nunomaduro/larastan": "^1.0",
-        "orchestra/testbench": "^6.22",
+        "nunomaduro/collision": "^6.1",
+        "nunomaduro/larastan": "^2.0",
+        "orchestra/testbench": "^7.0",
         "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-laravel": "^1.1",
+        "pestphp/pest-plugin-laravel": "^1.2",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^9.5",
-        "spatie/laravel-ray": "^1.26"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
-            "MattOstromHall\\MakeIn\\": "src",
-            "MattOstromHall\\MakeIn\\Database\\Factories\\": "database/factories"
+            "MattOstromHall\\MakeIn\\": "src"
         }
     },
     "autoload-dev": {
@@ -49,7 +47,11 @@
         "test-coverage": "vendor/bin/pest coverage"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
